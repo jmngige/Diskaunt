@@ -3,6 +3,7 @@ const app = express()
 const dotenv = require('dotenv')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
 require('colors')
 const dbConnection = require('./config/db')
 
@@ -15,13 +16,18 @@ process.on("uncaughtException", err=>{
 //load enviroment variables
 dotenv.config({path: './config/.env'})
 
-//middleware
-//implement body parser
-app.use(bodyParser.json()) 
-app.use(morgan('tiny'))
+//middlewares
+app.use(bodyParser.json()) //implement body parser
+app.use(morgan('tiny'))  
+
+//enabling cors
+app.use(cors())
+app.options('*', cors())
+
 
 //load database dbConnection
 dbConnection()
+
 
 
 const port = process.env.PORT
