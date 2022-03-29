@@ -10,6 +10,7 @@ const dbConnection = require('./config/db')
 //handle uncaught exceptions
 process.on("uncaughtException", err=>{
     console.log(err.message)
+    console.log(err)
     process.exit(1)
 })
 
@@ -20,6 +21,7 @@ const categoryRoutes = require('./routes/category')
 dotenv.config({path: './config/.env'})
 
 //middlewares
+app.use(express.json())
 app.use(bodyParser.json()) //implement body parser
 app.use(morgan('tiny'))  
 

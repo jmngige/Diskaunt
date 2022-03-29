@@ -1,6 +1,6 @@
 const Category = require("../models/category");
 
-//create categories
+/** ============== create categories ================ */
 exports.createCategory = async (req, res, next) => {
   const category = await Category.create(req.body);
 
@@ -10,7 +10,43 @@ exports.createCategory = async (req, res, next) => {
   });
 };
 
-//update categories
+/** ============== Get all categories ================ */
+exports.fetchAllCategories = async (req, res, next) => {
+
+  const categories = await Category.find();
+
+  if (!categories) {
+    return res.status(404).json({
+      success: false,
+      error: "category not found",
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    categories,
+  });
+};
+
+/** ============== Get category By Id ================ */
+exports.getSingleCategory = async (req, res, next) => {
+  const  category = await Category.findById(req.params.id)
+
+  if(!category){
+    return res.status(404).json({
+      success: false,
+      error: "category not found" 
+    })
+  }
+
+  res.status(200).json({
+    success: true,
+    category
+  })
+
+}
+
+/** ============== update categories ================ */
 exports.updateCategory = async (req, res, next) => {
   const category = await Category.findById(req.params.id);
 
@@ -32,22 +68,22 @@ exports.updateCategory = async (req, res, next) => {
   });
 };
 
-//delete category
-exports.deleteCategory = async (req, res, next)=>{
-    const category = await Category.findById(req.params.id)
+/** ============== delete categories ================ */
+exports.deleteCategory = async (req, res, next) => {
+  const category = await Category.findById(req.params.id);
 
-    if(!category){
-        return res.status(404).json({
-            success: false,
-            error: "category not found",
-          });
-        }
-    //else
+  if (!category) {
+    return res.status(404).json({
+      success: false,
+      error: "category not found",
+    });
+  }
+  //else
 
-       await Category.findByIdAndDelete(req.params.id)
+  await Category.findByIdAndDelete(req.params.id);
 
-        res.status(200).json({
-            success: true,
-            message: "category delete successfully"
-        })
-}
+  res.status(200).json({
+    success: true,
+    message: "category delete successfully",
+  });
+};
