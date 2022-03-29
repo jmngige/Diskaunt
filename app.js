@@ -13,6 +13,9 @@ process.on("uncaughtException", err=>{
     process.exit(1)
 })
 
+//load api routes
+const categoryRoutes = require('./routes/category')
+
 //load enviroment variables
 dotenv.config({path: './config/.env'})
 
@@ -24,9 +27,14 @@ app.use(morgan('tiny'))
 app.use(cors())
 app.options('*', cors())
 
+//handle api routes
+app.use('/api/v1', categoryRoutes)
+
 
 //load database dbConnection
 dbConnection()
+
+
 
 
 
