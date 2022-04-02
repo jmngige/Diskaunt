@@ -1,4 +1,5 @@
 const Category = require("../models/category");
+require("colors")
 
 /** ============== create categories ================ */
 exports.createCategory = async (req, res, next) => {
@@ -78,6 +79,7 @@ exports.deleteCategory = async (req, res, next) => {
       error: "category not found",
     });
   }
+
   //else
 
   await Category.findByIdAndDelete(req.params.id);
