@@ -12,6 +12,9 @@ router.route('/product').get(productRouter.getProductsList)
 /** ============== get single product ================ */
 router.route('/product/:id').get(productRouter.getProduct)
 
+/** ============== get featured products ================ */
+router.route('/product/featured/:count').get(productRouter.getFeaturedProducts)
+
 /** ============== update product details ================ */
 router.route('/product/:id').patch(productRouter.updateProduct)
 

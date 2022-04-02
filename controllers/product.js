@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Category = require("../models/category");
+const ApiFilters = require('../utils/apiFiters')
 
 /** ============== add product ================ */
 exports.addProduct = async (req, res, next) => {
@@ -21,7 +22,15 @@ exports.addProduct = async (req, res, next) => {
 
 /** ============== get product list ================ */
 exports.getProductsList = async (req, res, next) => {
-    const products = await Product.find().populate('category')
+
+    const api =new  ApiFilters(Product.find(), req.query)
+                .filter()
+                .sort()
+                .select()
+                .pagination()
+
+
+    const products = await api.query.populate('category')
 
     if(!products){
         return res.status(404).json({
@@ -51,6 +60,24 @@ exports.getProduct = async (req, res, next) => {
     res.status(200).json({
         success: true,
         product
+    })
+}
+
+/** ============== get featured products ================ */
+exports.getFeaturedProducts = async (req, res, next) => {
+    const count = req.params.count ? req.params.count : 0
+    const products = await Product.find({featured: true}).limit(+count)
+
+    if(!products){
+        return res.status(404).json({
+            success: false,
+            message:"product not found"
+        })
+    }
+
+    res.status(200).json({
+        success: true,
+        products
     })
 }
 
