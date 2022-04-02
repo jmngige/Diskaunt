@@ -20,8 +20,8 @@ exports.addProduct = async (req, res, next) => {
 };
 
 /** ============== get product list ================ */
-exports.getProducts = async (req, res, next) => {
-    const products = await Product.find()
+exports.getProductsList = async (req, res, next) => {
+    const products = await Product.find().populate('category')
 
     if(!products){
         return res.status(404).json({
@@ -34,5 +34,64 @@ exports.getProducts = async (req, res, next) => {
         success: true,
         count: products.length,
         products
+    })
+}
+
+/** ============== get single product ================ */
+exports.getProduct = async (req, res, next) => {
+    const product = await Product.findById(req.params.id).populate('category')
+
+    if(!product){
+        return res.status(404).json({
+            success: false,
+            message:"product not found"
+        })
+    }
+
+    res.status(200).json({
+        success: true,
+        product
+    })
+}
+
+/** ============== update product details ================ */
+exports.updateProduct = async (req, res, next) => {
+    const product = await Product.findById(req.params.id)
+
+    if(!product){
+        return res.status(404).json({
+            succcess: false,
+            message:"Product not found"
+        })
+    }
+
+    const update = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    })
+
+    res.status(200).json({
+        success: true,
+        message: "Product updated successfully",
+        update
+    })
+}
+
+/** ============== delete product ================ */
+exports.deleteProduct = async (req, res, next) => {
+    const product = await Product.findById(req.params.id)
+
+    if(!product){
+        return res.status(404).json({
+            success: false,
+            message: "product not found"
+        })
+    }
+
+    await Product.findByIdAndDelete(req.params.id)
+
+    res.status(200).json({
+        success: true,
+        message: "Product deleted successfully"
     })
 }
