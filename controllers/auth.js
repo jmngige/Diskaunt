@@ -13,6 +13,8 @@ exports.registerUser = async (req, res, next) => {
 
 exports.loginUser = async (req, res, next) => {
 
+    
+
 }
 
 exports.logout = async (req, res, next) => {
