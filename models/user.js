@@ -65,9 +65,14 @@ userSchema.pre("save", async function(next){
 
 /** Generate jsonwebtoken */
 userSchema.methods.generateJWT = function(){
-   jwt.sign({id: _id}, process.env.JWT_SECRET, {
+   return jwt.sign({id: this._id}, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE
   })
+}
+
+/** compare passwords */
+userSchema.methods.comparePassword = async function(epassword){
+  return bcrypt.compare(epassword, this.password)
 }
 
 module.exports = mongoose.model("User", userSchema);

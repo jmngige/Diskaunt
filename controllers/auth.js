@@ -13,7 +13,42 @@ exports.registerUser = async (req, res, next) => {
 
 exports.loginUser = async (req, res, next) => {
 
-    
+    const { email, password } = req.body
+
+    if(!email || !password){
+        return res.status(404).json({
+            success: false,
+            messsage: "Please enter email and password to proceed"
+        })
+    }
+
+    const user = await User.findOne({email}).select('+password')
+
+    if(!user){
+        return res.status(404).json({
+            success: false,
+            messsage: "Entered email or password is invalid"
+        })
+    }
+
+    const isMatch = await user.comparePassword(password)
+    if(!isMatch){
+        return res.status(404).json({
+            success: false,
+            messsage: "Entered email or password is invalid"
+        })
+    }
+
+
+    const token = user.generateJWT()
+
+    res.status(200).json({
+        success: true,
+        user,
+        token
+    })
+
+
 
 }
 
