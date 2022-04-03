@@ -18,6 +18,7 @@ process.on("uncaughtException", err=>{
 const categoryRoutes = require('./routes/category')
 const productRoutes = require('./routes/product')
 const authRoutes = require('./routes/auth')
+const userRoutes = require('./routes/user')
 
 //load enviroment variables
 dotenv.config({path: './config/.env'})
@@ -35,6 +36,7 @@ app.options('*', cors())
 app.use('/api/v1', categoryRoutes)
 app.use('/api/v1', productRoutes)
 app.use('/api/v1', authRoutes)
+app.use('/api/v1', userRoutes)
 
 
 //load database dbConnection

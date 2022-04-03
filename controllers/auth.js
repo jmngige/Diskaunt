@@ -9,5 +9,24 @@ exports.registerUser = async (req, res, next) => {
         success: true,
         user
     })
+}
+
+exports.loginUser = async (req, res, next) => {
+
+}
+
+exports.logout = async (req, res, next) => {
+    
+}
+
+exports.forgotPassword = async (req, res, next) => {
+
+}
+
+exports.resetPassword = async (req, res, next) => {
+
+}
+
+exports.deleteUser = async (req, res, next) => {
 
 }
