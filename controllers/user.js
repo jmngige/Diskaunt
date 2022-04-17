@@ -20,7 +20,7 @@ exports.getUsers = async (req, res, next) => {
 
 /** ============== get user profile ================ */
 exports.getUserProfile = async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.user.id);
   if (!user) {
     return res.status(404).json({
       success: false,
@@ -36,7 +36,7 @@ exports.getUserProfile = async (req, res, next) => {
 
 /** ============== update user profile ================ */
 exports.updateUserProfile = async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.user.id);
   if (!user) {
     return res.status(404).json({
       success: false,
@@ -56,7 +56,7 @@ exports.updateUserProfile = async (req, res, next) => {
 
 /** ============== delete user profile ================ */
 exports.deleteUserProfile = async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.user.id);
   if (!user) {
     return res.status(404).json({
       success: false,

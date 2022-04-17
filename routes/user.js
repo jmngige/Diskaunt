@@ -5,15 +5,15 @@ const authRoutes = require('../middlewares/authRoutes')
 const usersRouter = require('../controllers/user')
 
 /** ============== get users ================ */
-router.route('/user').get(authRoutes, usersRouter.getUsers)
+router.route('/user').get( usersRouter.getUsers)
 
 /** ============== get user profile ================ */
-router.route('/user/:id').get(usersRouter.getUserProfile) 
+router.route('/user/profile').get(authRoutes, usersRouter.getUserProfile) 
 
-/** ============== get user profile ================ */
-router.route('/user/:id').patch(usersRouter.updateUserProfile) 
+/** ============== update user profile ================ */
+router.route('/user/profile').patch(authRoutes, usersRouter.updateUserProfile) 
 
 /** ============== delete user profile ================ */
-router.route('/user/:id').delete(usersRouter.deleteUserProfile) 
+router.route('/user/profile').delete(authRoutes, usersRouter.deleteUserProfile) 
 
 module.exports = router

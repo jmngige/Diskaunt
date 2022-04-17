@@ -14,9 +14,12 @@ exports.registerUser = async (req, res, next) => {
 
   const user = await User.create(req.body);
 
+  const token = user.generateJWT();
+
   res.status(201).json({
     success: true,
-    user,
+    message: "Registration successful",
+    token
   });
 };
 

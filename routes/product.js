@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const authRoutes = require('../middlewares/authRoutes')
 
 const productRouter = require("../controllers/product");
 
 /** ============== add product ================ */
-router.route("/product").post(productRouter.addProduct);
+router.route("/product").post(authRoutes, productRouter.addProduct);
 
 /** ============== get products list ================ */
 router.route('/product').get(productRouter.getProductsList)
@@ -16,9 +17,9 @@ router.route('/product/:id').get(productRouter.getProduct)
 router.route('/product/featured/:count').get(productRouter.getFeaturedProducts)
 
 /** ============== update product details ================ */
-router.route('/product/:id').patch(productRouter.updateProduct)
+router.route('/product/:id').patch(authRoutes, productRouter.updateProduct)
 
-/** ============== update product details ================ */
-router.route('/product/:id').delete(productRouter.deleteProduct)
+/** ============== delete product details ================ */
+router.route('/product/:id').delete(authRoutes, productRouter.deleteProduct)
 
 module.exports = router;
