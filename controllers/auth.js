@@ -2,7 +2,6 @@ const User = require("../models/user");
 
 /** ============== Register User ================ */
 exports.registerUser = async (req, res, next) => {
-
   const user_exist = await User.findOne({ email: req.body.email });
 
   if (user_exist) {
@@ -15,12 +14,20 @@ exports.registerUser = async (req, res, next) => {
   const user = await User.create(req.body);
 
   const token = user.generateJWT();
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
 
-  res.status(201).json({
+  res.status(201).cookie("access_token", token, options).json({
     success: true,
     message: "Registration successful",
-    token
+    token,
   });
+
+  saveToken(user, token, res);
 };
 
 /** ============== login User ================ */
@@ -54,13 +61,30 @@ exports.loginUser = async (req, res, next) => {
 
   const token = user.generateJWT();
 
-  res.status(200).json({
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+
+  res.status(200).cookie("token", token, options).json({
     success: true,
     token,
   });
 };
 
-exports.logout = async (req, res, next) => {};
+exports.logoutUser = async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now()),
+    httpOnly: true
+})
+
+res.status(200).json({
+    success: true,
+    message: "Logged out successfully"
+})
+};
 
 exports.forgotPassword = async (req, res, next) => {};
 

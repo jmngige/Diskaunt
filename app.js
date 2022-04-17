@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const dotenv = require('dotenv')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
 const cors = require('cors')
 require('colors')
@@ -26,6 +27,7 @@ dotenv.config({path: './config/.env'})
 //middlewares
 app.use(express.json())
 app.use(bodyParser.json()) //implement body parser
+app.use(cookieParser())
 app.use(morgan('tiny'))  
 
 //enabling cors
