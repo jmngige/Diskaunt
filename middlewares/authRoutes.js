@@ -27,10 +27,9 @@ const authRoutes = async (req, res, next) =>{
             message: "Error ocurred please retry again"
         })
 
-
-        req.user = user
-
     }
+    req.user = user
+
     }catch(err){
         return res.status(401).json({
             success: false,
