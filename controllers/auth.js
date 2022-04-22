@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const sendEmail = require("../utils/sendEmails")
 
 /** ============== Register User ================ */
 exports.registerUser = async (req, res, next) => {
@@ -85,7 +86,62 @@ exports.logoutUser = async (req, res, next) => {
   });
 };
 
-exports.forgotPassword = async (req, res, next) => {};
+exports.forgotPassword = async (req, res, next) => {
+
+  const email = req.body.email
+
+  if(!email){
+    return res.status(404).json({
+      success: false,
+      message: "Please provide a valid email address"
+    })
+  }
+
+  const user = await User.findOne({email: req.body.email})
+
+  if(!user){
+    return res.status(404).json({
+      success: false,
+      message: "Email provided does not have an account registered"
+    })
+  }
+
+  const resetPasswordToken = user.generateResetPasswordToken()
+ 
+  await user.save({ validateBeforeSave: false})
+
+  /** reset email url */
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/password/forgot/${resetPasswordToken}`
+  const message = `Password reset token is \n\n ${resetUrl} \n\n ignore if you didn't request it.`
+
+  /** set a try catch error incase theres a problem sending the reset email*/
+  try{
+
+    await sendEmail({
+    email: user.email,
+    subject: "Reset Your Password",
+    message
+  })
+
+  res.status(200).json({
+    success: true,
+    message: `Reset email sent successfully to ${user.email}`
+  })
+
+  }catch(error){
+    
+    user.resetPasswordToken = undefined
+    user.resetPasswordTokenExpire = undefined
+
+    await user.save({ validateBeforeSave: false})
+    return res.status(200).json({
+      success: false,
+      message: `Something went wrong. Please wait and try again later`
+    })
+  }
+  
+
+};
 
 exports.resetPassword = async (req, res, next) => {};
 

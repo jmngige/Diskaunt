@@ -13,4 +13,7 @@ router.route('/auth/login').post(authRouter.loginUser)
 /** ============== logout user ================ */
 router.route('/auth/logout').post(authRoutes, authRouter.logoutUser)
 
+/** ============== forgot password user ================ */
+router.route('/auth/password/forgot').post(authRouter.forgotPassword)
+
 module.exports = router
