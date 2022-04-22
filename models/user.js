@@ -77,10 +77,10 @@ userSchema.methods.comparePassword = async function (epassword) {
 };
 
 /** Create a reset password token */
-userSchema.methods.generateResetPasswordToken = async function () {
-  const token = await crypto.randomBytes(20).toString('hex');
+userSchema.methods.generateResetPasswordToken = function () {
+  const token = crypto.randomBytes(20).toString('hex');
 
-   this.resetPasswordToken = await crypto.createHash('sha256').update(token).digest('hex')
+   this.resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex')
 
    this.resetPasswordTokenExpire = Date.now() + process.env.RESET_PASS_TOKEN_EXPIRE
 

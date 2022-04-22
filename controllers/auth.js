@@ -106,12 +106,12 @@ exports.forgotPassword = async (req, res, next) => {
     })
   }
 
-  const resetPasswordToken = user.generateResetPasswordToken()
+  const resetToken = user.generateResetPasswordToken()
  
   await user.save({ validateBeforeSave: false})
 
   /** reset email url */
-  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/password/forgot/${resetPasswordToken}`
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/password/forgot/${resetToken}`
   const message = `Password reset token is \n\n ${resetUrl} \n\n ignore if you didn't request it.`
 
   /** set a try catch error incase theres a problem sending the reset email*/
