@@ -45,6 +45,38 @@ app.use('/api/v1', userRoutes)
 dbConnection()
 
 
+const User = require("./models/emails");
+
+
+app.post('/register', async (req, res)=>{
+
+    const { email, username, password } = req.body;
+
+    const user_exists = await User.findOne({ email: req.body.email });
+  
+    if (user_exists) {
+      return res.status(401).json({
+        success: false,
+        message: "account with that email adress already exists",
+      });
+    }
+  
+    const user = await User.create({
+      email,
+      username,
+      password,
+    });
+  
+    const token = user.generateJWT();
+    console.log(token)
+  
+    res.status(201).json({
+      success: true,
+      message: "Account created successfully",
+      token,
+    });
+})
+
 
 
 

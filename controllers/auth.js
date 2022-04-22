@@ -7,7 +7,8 @@ exports.registerUser = async (req, res, next) => {
   if (user_exist) {
     res.status(401).json({
       success: false,
-      message: "user with that email already exists",
+      message:
+        "user with that email already exists. Login to access your account",
     });
   }
 
@@ -21,13 +22,11 @@ exports.registerUser = async (req, res, next) => {
     httpOnly: true,
   };
 
-  res.status(201).cookie("access_token", token, options).json({
+  res.status(201).cookie("token", token, options).json({
     success: true,
     message: "Registration successful",
     token,
   });
-
-  saveToken(user, token, res);
 };
 
 /** ============== login User ================ */
@@ -75,15 +74,15 @@ exports.loginUser = async (req, res, next) => {
 };
 
 exports.logoutUser = async (req, res, next) => {
-  res.cookie('token', 'none', {
+  res.cookie("token", "none", {
     expires: new Date(Date.now()),
-    httpOnly: true
-})
+    httpOnly: true,
+  });
 
-res.status(200).json({
+  res.status(200).json({
     success: true,
-    message: "Logged out successfully"
-})
+    message: "Logged out successfully",
+  });
 };
 
 exports.forgotPassword = async (req, res, next) => {};

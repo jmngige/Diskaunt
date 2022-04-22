@@ -26,7 +26,7 @@ exports.authRoutes = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Error ocurred please retry again",
+        message: "Please register or login first",
       });
     }
     req.user = user;
