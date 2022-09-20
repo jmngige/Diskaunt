@@ -2,7 +2,7 @@
 
 ecommerce rest api 
 
-##Tools & Techologies
+## Tools & Techologies
 `Nodejs` 
 `Express`
 `Mongo DB`
